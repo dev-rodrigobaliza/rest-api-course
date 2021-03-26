@@ -4,3 +4,4 @@
 /data.db
 /dummy
 /__pycache__
+.env

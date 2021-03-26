@@ -1,4 +1,4 @@
-from ma import ma
+from libs.ma import ma
 from models.user import UserModel
 
 

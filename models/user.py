@@ -1,10 +1,9 @@
-from typing import Dict, Union
+from flask import request, url_for
+from requests import Response
 
-from db import db
-from bc import bc
-
-
-UserJSON = Dict[str, Union[int, str]]
+from libs.db import db
+from libs.bc import bc
+from libs.mg import Mailgun
 
 
 class UserModel(db.Model):
@@ -14,14 +13,27 @@ class UserModel(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
+    activated = db.Column(db.Boolean, default=False)
 
     @ classmethod
     def find_by_username(cls, username: str) -> "UserModel":
         return cls.query.filter_by(username=username).first()
 
     @ classmethod
+    def find_by_email(cls, email: str) -> "UserModel":
+        return cls.query.filter_by(email=email).first()
+
+    @ classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
         return cls.query.filter_by(id=_id).first()
+
+    def send_confirmation_email(self) -> Response:
+        link = request.url_root[:-1] + url_for("useractivate", user_id=self.id)
+        subject = "Registration activation"
+        text = f"Please click the link to activate your registration: {link}"
+        html = f'<html>Please click the link to activate your registration: <a href="{link}">Activation Link</a></html>'
+
+        return Mailgun.send_email(self.email, subject, text, html)
 
     def save_to_db(self) -> None:
         db.session.add(self)

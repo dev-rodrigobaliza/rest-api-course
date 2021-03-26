@@ -1,24 +1,26 @@
+import os
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
 
-from ma import ma
-from db import db
-from bc import bc
+from libs.ma import ma
+from libs.db import db
+from libs.bc import bc
 from blacklist import BLACKLIST
-from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogout
+from resources.user import UserRegister, UserActivate, UserLogin, User, TokenRefresh, UserLogout
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.config['JWT_SECRET_KEY'] = "xispirutss"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "SQLALCHEMY_DATABASE_URI")
+app.secret_key = os.environ.get("APP_SECRET_KEY")
 
-api = Api(app, prefix="/api/v1")
+api = Api(app, prefix=os.environ.get("MAILGUN_DOMAIN"))
 
 
 @app.before_first_request
@@ -30,6 +32,12 @@ def create_tables():
 @app.errorhandler(ValidationError)
 def handle_marshmallow_validation(err):
     return jsonify(err.messages), 400
+
+
+@app.after_request
+def add_header(response):
+    response.headers['server'] = os.environ.get("SERVER_NAME")
+    return response
 
 
 jwt = JWTManager(app)
@@ -83,6 +91,7 @@ api.add_resource(StoreList, "/stores")
 api.add_resource(Item, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 api.add_resource(UserRegister, "/register")
+api.add_resource(UserActivate, "/user/<int:user_id>/activate")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
@@ -93,4 +102,4 @@ if __name__ == "__main__":
     ma.init_app(app)
     bc.init_app(app)
 
-    app.run(port=5000, debug=True)
+    app.run(ip="0.0.0.0", port=5000, debug=os.environ.get("DEBUG"))

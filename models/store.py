@@ -1,6 +1,6 @@
 from typing import List
 
-from db import db
+from libs.db import db
 
 
 class StoreModel(db.Model):

@@ -1,5 +1,6 @@
 from typing import List
 
+from libs.i18n import get_text
 from libs.db import db
 
 

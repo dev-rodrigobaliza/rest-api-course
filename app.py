@@ -8,9 +8,10 @@ from libs.ma import ma
 from libs.db import db
 from libs.bc import bc
 from blacklist import BLACKLIST
-from resources.user import UserRegister, UserActivate, UserLogin, User, TokenRefresh, UserLogout
+from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogout
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+from resources.activation import Activation, ActivationByUser
 
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "SQLALCHEMY_DATABASE_URI")
 app.secret_key = os.environ.get("APP_SECRET_KEY")
 
-api = Api(app, prefix=os.environ.get("MAILGUN_DOMAIN"))
+api = Api(app, prefix=os.environ.get("API_PREFIX"))
 
 
 @app.before_first_request
@@ -91,7 +92,8 @@ api.add_resource(StoreList, "/stores")
 api.add_resource(Item, "/item/<string:name>")
 api.add_resource(ItemList, "/items")
 api.add_resource(UserRegister, "/register")
-api.add_resource(UserActivate, "/user/<int:user_id>/activate")
+api.add_resource(Activation, "/user_activate/<string:activation_id>")
+api.add_resource(ActivationByUser, "/activation/user/<int:user_id>")
 api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
@@ -102,4 +104,4 @@ if __name__ == "__main__":
     ma.init_app(app)
     bc.init_app(app)
 
-    app.run(ip="0.0.0.0", port=5000, debug=os.environ.get("DEBUG"))
+    app.run(port=5000, debug=True)

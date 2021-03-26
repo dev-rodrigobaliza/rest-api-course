@@ -2,11 +2,7 @@ import os
 from typing import List
 from requests import Response, post
 
-
-FAILED_DOMAIN = "Failed to load Mailgun domain."
-FAILED_API_KEY = "Failed to load Mailgun API key."
-FAILED_SEND_EMAIL = "Error sending activation email, user registration failed."
-
+from libs.i18n import get_text
 
 class MailgunException(Exception):
     def __init__(self, message: str):
@@ -23,10 +19,10 @@ class Mailgun:
     @classmethod
     def send_email(cls, email: List[str], subject: str, text: str, html: str) -> Response:
         if cls.MAILGUN_DOMAIN is None:
-            raise MailgunException(FAILED_DOMAIN)
+            raise MailgunException(get_text("mailgun_failed_load_domain"))
 
         if cls.MAILGUN_API_KEY is None:
-            raise MailgunException(FAILED_API_KEY)
+            raise MailgunException(get_text("mailgun_failed_load_api_key"))
 
         response = post(
             f"https://api.mailgun.net/v3/{cls.MAILGUN_DOMAIN}/messages",
@@ -41,6 +37,6 @@ class Mailgun:
         )
 
         if response.status_code != 200:
-            raise MailgunException(FAILED_SEND_EMAIL)
+            raise MailgunException(get_text("mailgun_failed_send_email"))
 
         return response

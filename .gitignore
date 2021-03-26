@@ -1,0 +1,6 @@
+/.misc
+/.rest-api
+/.vscode
+/data.db
+/dummy
+/__pycache__

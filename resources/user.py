@@ -21,10 +21,10 @@ class UserRegister(Resource):
         user = user_schema.load(request.get_json())
 
         if UserModel.find_by_username(user.username):
-            return {"message": get_text("user_name_exists")}, 400
+            return {"message": get_text("user_name_exists").format(user.username)}, 400
 
         if UserModel.find_by_email(user.email):
-            return {"message": get_text("user_email_exists")}, 400
+            return {"message": get_text("user_email_exists").format(user.email)}, 400
 
         user.password = bc.generate_password_hash(user.password)
 

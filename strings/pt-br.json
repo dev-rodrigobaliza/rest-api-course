@@ -1,0 +1,42 @@
+{
+    "mailgun_failed_load_domain": "Falha ao carregar o domínio do Mailgun.",
+    "mailgun_failed_load_api_key": "Falha ao carregar a API key do Mailgun.",
+    "mailgun_failed_send_email": "Erro ao envial o email de ativação, registro de usuário falhou.",
+
+    "activation_not_found": "Ativação não encontrada.",
+    "activation_expired": "O link da ativação expirou.",
+    "activation_activated": "Esta conta já foi ativada anteriormente.",
+    "activation_resend_successful": "O email com o link de ativação foi reenviado com sucesso.",
+    "activation_resend_error": "Erro ao reenviar o email com o link de ativação.",
+
+    "item_name_exists": "Um ítem com o nome '{}' já existe.",
+    "item_insert_error": "Erro ao criar o novo ítem.",
+    "item_not_found": "Ítem não encontrado.",
+    "item_deleted": "Ítem apagado.",
+
+    "store_name_exists": "Uma loja com o nome '{}' já existe.",
+    "store_insert_error": "Erro ao criar a nova loja.",
+    "store_not_found": "Loja não encontrada.",
+    "store_deleted": "Loja apagada.",
+
+    "user_name_exists": "Um usuário com o nome '{}' já existe.",
+    "user_email_exists": "Um usuário com o email '{}' já existe.",
+    "user_register_error": "Erro ao criar novo usuário.",
+    "user_register_successful": "Usuário criado com sucesso, um email com um link de ativação da conta foi enviado para o endereço de email informado, aguardando a confirmação para ativar a conta.",
+    "user_not_found": "Usuário não encontrado.",
+    "user_deleted": "Usuário apagado.",
+    "user_invalid_credentials": "Credenciais de acesso inválidas!",
+    "user_logged_out": "Usuário <{}> desconectado com sucesso.",
+    "user_not_activated": "Usuário com a conta sem ativar, favor conferir o email <{}>.",
+
+    "image_uploaded": "Imagem '{}' enviada com sucesso.",
+    "image_extension_not_allowed": "'{}' não é um formato de imagem permitido.",
+    "image_illegal_file_name": "'{}' não é um nome de imagem permitido.",
+    "image_not_found": "Imagem '{}' não encontrada.",
+    "image_deleted": "Imagem '{}' apagada.",
+    "image_delete_error": "Erro ao apagar a imagem '{}'.",
+
+    "avatar_delete_error": "Erro ao apagar o avatar '{}'.",
+    "avatar_uploaded": "Avatar '{}' enviado com sucesso.",
+    "avatar_not_found": "Avatar <{}> não encontrado."
+}

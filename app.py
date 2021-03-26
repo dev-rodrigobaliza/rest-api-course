@@ -1,27 +1,39 @@
 import os
+from dotenv import load_dotenv
+
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_uploads import configure_uploads, patch_request_class
 from marshmallow import ValidationError
 
 from libs.ma import ma
 from libs.db import db
 from libs.bc import bc
+from libs.im import IMAGE_SET
+from libs.i18n import change_locale
 from blacklist import BLACKLIST
 from resources.user import UserRegister, UserLogin, User, TokenRefresh, UserLogout
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from resources.activation import Activation, ActivationByUser
+from resources.image import ImageUpload, Image, AvatarUpload, Avatar
 
+
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024
+
+change_locale("en-us")
+# change_locale("pt-br")
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "SQLALCHEMY_DATABASE_URI")
-app.secret_key = os.environ.get("APP_SECRET_KEY")
+load_dotenv(".env", verbose=True)
+app.config.from_object("default_config")
+app.config.from_envvar("APP_SETTINGS")
 
-api = Api(app, prefix=os.environ.get("API_PREFIX"))
+patch_request_class(app, MAX_UPLOAD_SIZE)
+configure_uploads(app, IMAGE_SET)
+
+api = Api(app, prefix="/api/v1")
 
 
 @app.before_first_request
@@ -37,7 +49,7 @@ def handle_marshmallow_validation(err):
 
 @app.after_request
 def add_header(response):
-    response.headers['server'] = os.environ.get("SERVER_NAME")
+    response.headers['server'] = "obnoxious-server"
     return response
 
 
@@ -98,10 +110,14 @@ api.add_resource(User, "/user/<int:user_id>")
 api.add_resource(UserLogin, "/login")
 api.add_resource(TokenRefresh, "/refresh")
 api.add_resource(UserLogout, "/logout")
+api.add_resource(ImageUpload, "/upload/image")
+api.add_resource(Image, "/image/<string:filename>")
+api.add_resource(AvatarUpload, "/upload/avatar")
+api.add_resource(Avatar, "/avatar/<int:user_id>")
 
 if __name__ == "__main__":
     db.init_app(app)
     ma.init_app(app)
     bc.init_app(app)
 
-    app.run(port=5000, debug=True)
+    app.run()

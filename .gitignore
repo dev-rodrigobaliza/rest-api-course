@@ -4,4 +4,5 @@
 /data.db
 /dummy
 /__pycache__
+/static/images
 .env

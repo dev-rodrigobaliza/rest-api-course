@@ -19,13 +19,24 @@
     "store_not_found": "Store not found.",
     "store_deleted": "Store deleted.",
 
-    "user_name_exists": "A user with that username already exists.",
-    "user_email_exists": "A user with that email already exists.",
+    "user_name_exists": "A user with username '{}' already exists.",
+    "user_email_exists": "A user with email '{}' already exists.",
     "user_register_error": "An error occurred while registering the user.",
     "user_register_successful": "User created successfully, an email with an activation link has been sent to the email address, awaiting confirmation to activate the account.",
     "user_not_found": "User not found.",
     "user_deleted": "User deleted.",
     "user_invalid_credentials": "Invalid credentials!",
-    "user_logged_out": "User <id={}> successfully logged out.",
-    "user_not_activated": "You have not activated your account, please check your email <{}>." 
+    "user_logged_out": "User <{}> successfully logged out.",
+    "user_not_activated": "You have not activated your account, please check your email <{}>.",
+
+    "image_uploaded": "Image '{}' successfuly uploaded.",
+    "image_extension_not_allowed": "'{}' Is not a allowed image format.",
+    "image_illegal_file_name": "'{}' Is not a allowed file name.",
+    "image_not_found": "Image '{}' not found.",
+    "image_deleted": "Image '{}' deleted.",
+    "image_delete_error": "An error occurred while deleting the image '{}'.",
+
+    "avatar_delete_error": "An error occurred while deleting the avatar '{}'.",
+    "avatar_uploaded": "Avatar '{}' successfuly uploaded.",
+    "avatar_not_found": "Avatar <{}> not found."
 }

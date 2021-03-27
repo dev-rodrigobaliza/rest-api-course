@@ -49,7 +49,9 @@ def handle_marshmallow_validation(err):
 
 @app.after_request
 def add_header(response):
-    response.headers['server'] = "obnoxious-server"
+    # just for the fun ;)
+    response.headers['server'] = "obnoxious"
+    response.headers['X-Powered-By'] = "creativity"
     return response
 
 

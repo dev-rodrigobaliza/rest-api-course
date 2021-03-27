@@ -26,7 +26,7 @@ class UserRegister(Resource):
         if UserModel.find_by_email(user.email):
             return {"message": get_text("user_email_exists").format(user.email)}, 400
 
-        user.password = bc.generate_password_hash(user.password)
+        user.password = bc.generate_password_hash(user.password).decode('utf-8')
 
         try:
             user.save_to_db()
@@ -38,7 +38,7 @@ class UserRegister(Resource):
             return {"message": get_text("user_register_successful")}, 201
         except MailgunException as err:
             user.delete_from_db()
-            return {"message": err.message}, 500
+            return {"message": str(err)}, 500
         except:
             traceback.print_exc()
             user.delete_from_db()

@@ -1,10 +1,10 @@
 import os
-from dotenv import load_dotenv
 
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_uploads import configure_uploads, patch_request_class
+from dotenv import load_dotenv
 from marshmallow import ValidationError
 
 from libs.ma import ma
@@ -34,6 +34,7 @@ patch_request_class(app, MAX_UPLOAD_SIZE)
 configure_uploads(app, IMAGE_SET)
 
 api = Api(app, prefix="/api/v1")
+jwt = JWTManager(app)
 
 
 @app.before_first_request
@@ -53,9 +54,6 @@ def add_header(response):
     response.headers['server'] = "obnoxious"
     response.headers['X-Powered-By'] = "creativity"
     return response
-
-
-jwt = JWTManager(app)
 
 
 @jwt.additional_claims_loader
